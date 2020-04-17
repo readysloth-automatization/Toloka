@@ -20,3 +20,17 @@ def iframe_wait(driver, timeout = 30):
     IFRAME_XPATH = '//iframe'
     waiter.until(EC.frame_to_be_available_and_switch_to_it(driver.find_element_by_xpath(IFRAME_XPATH)))
 
+def make_bigger_text(driver, element, fontsize = 16):
+    bigger_font = """<font size = "{fs}"> ## </font>""".format(fs=fontsize)
+    text        = element.text
+    bigger_text = bigger_font.replace('##', text)
+    driver.execute_script("arguments[0].innerHTML = arguments[0].innerHTML.replace('{e_text}','{e_bigger_text}')".format(e_text=text, e_bigger_text=bigger_text), element)
+
+
+def add_br(driver, element, count = 1):
+    line_break = """<br style="line-height:{cn};">""".format(cn=count)
+    driver.execute_script("arguments[0].innerHTML = '{br}' + arguments[0].innerHTML".format(br=line_break), element)
+
+def get_parent(driver, element, ancestor = 1):
+    return driver.execute_script("return arguments[0]" + ".parentNode"*ancestor + ";", element)
+
