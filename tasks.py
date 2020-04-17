@@ -8,19 +8,19 @@ import input
 import zenmode
 import constants as CONST
 
-def photo_moderation_radiobuttons(driver):
-    radiobuttons_iterator = driver.find_elements_by_xpath(CONST.ZEN_MODE_XPATHS["RADIOBUTTON"])
-    for yes, no in zip(*[iter(radiobuttons_iterator)]*2):
-        yield (yes, no)
-
-def create_if_functions(radiobuttons_iterator):
-    def if_true_photo():
-        next(radiobuttons_iterator)[0].click()
-
-    def if_false_photo():
-        next(radiobuttons_iterator)[1].click()
-
-    return (if_true_photo, if_false_photo)
+#def photo_moderation_radiobuttons(driver):
+#    radiobuttons_iterator = driver.find_elements_by_xpath(CONST.ZEN_MODE_XPATHS["RADIOBUTTON"])
+#    for suitable, not_suitable in zip(*[iter(radiobuttons_iterator)]*2):
+#        yield (suitable, not_suitable)
+#
+#def create_if_functions(driver, radiobuttons_iterator):
+#    def if_suitable_photo():
+#        suitable = next(radiobuttons_iterator)[0]
+#
+#    def if_not_suitable_photo():
+#        not_suitable  = next(radiobuttons_iterator)[1]
+#
+#    return (if_suitable_photo, if_not_suitable_photo)
 
 
 def go_to_photo_moderation(driver):
@@ -31,6 +31,6 @@ def go_to_photo_moderation(driver):
     if CONST.ZEN_MODE:
         zenmode.zenify_photo_moderation(driver)
 
-    if_true, if_false = create_if_functions(photo_moderation_radiobuttons(driver))
-
-    input.start_listening(input.conditional_press(if_true, if_false))
+    #if_true, if_false = create_if_functions(driver, photo_moderation_radiobuttons(driver))
+    #if_true, if_false
+    input.start_listening(input.conditional_press())

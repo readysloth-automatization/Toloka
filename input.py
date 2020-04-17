@@ -1,13 +1,25 @@
 from pynput import keyboard
 
-def conditional_press(if_true, if_false):
+keyboard_controller = keyboard.Controller()
+def press_once(key):
+    keyboard_controller.press(key)
+    keyboard_controller.release(key)
+
+def conditional_press(if_true = None, if_false = None, another = None):
     def on_keypress(key):
+        if key == keyboard.Key.esc:
+            raise keyboard.Listener.StopException
         if not hasattr(key, 'char'):
             return
         if key.char == 'j':
-            if_true()
+            press_once('1')
+            #if_true()
         elif key.char == 'k':
-            if_false()
+            press_once('2')
+            #if_false()
+        else:
+            return
+        press_once(keyboard.Key.down)
     return on_keypress
 
 def start_listening(keypress_handler):

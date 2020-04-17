@@ -20,6 +20,7 @@ def iframe_wait(driver, timeout = 30):
     IFRAME_XPATH = '//iframe'
     waiter.until(EC.frame_to_be_available_and_switch_to_it(driver.find_element_by_xpath(IFRAME_XPATH)))
 
+
 def make_bigger_text(driver, element, fontsize = 16):
     bigger_font = """<font size = "{fs}"> ## </font>""".format(fs=fontsize)
     text        = element.text
