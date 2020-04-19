@@ -7,6 +7,10 @@ from constants import *
 
 import time
 
+def list_to_tuple_list(list):
+    it = iter(list)
+    return zip(it,it)
+
 def create_waiter(driver, action, timeout = 30):
     waiter = wait.WebDriverWait(driver, timeout)
     def wait_and_make_action(selector):

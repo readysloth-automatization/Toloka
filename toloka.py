@@ -20,8 +20,8 @@ username = input("Введите логин : ")
 password = getpass("Введите пароль: ")
 
 utils.create_waiter(driver, lambda element: element.send_keys(username + "\n"))(LOGIN["INPUT_FIELD"])
-time.sleep(0.1)
+time.sleep(1)
 utils.create_waiter(driver, lambda element: element.send_keys(password + "\n"))(LOGIN["INPUT_FIELD"])
 
-tasks.go_to_photo_moderation(driver)
+tasks.go_to_organization_photo_moderation(driver)
 

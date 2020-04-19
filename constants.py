@@ -11,9 +11,14 @@ LOGIN = {
     "ENTER"        : r"//div[@class='passp-button passp-sign-in-button']",
 }
 
+BEGIN_BUTTON = "/../../div[2]/button"
+TASKS = {
+    "ORGANIZATION_PHOTO_MODERATION" : r"//div[contains(@class, 'snippet__title') and contains(text(),'Модерация фотографий организаций')]" + BEGIN_BUTTON,
+    "SIMPLE_PHOTO_MODERATION"       : r"//div[contains(@class, 'snippet__title') and contains(text(),'Простая модерация фотографий')]" + BEGIN_BUTTON,
+}
+
 XPATH = {
     "BOOKMARKED"              : r'/html/body/div[1]/div/div[3]/div/div[1]/div/div/div/span[5]',
-    "SIMPLE_PHOTO_MODERATION" : r"//div[contains(@class, 'snippet__title') and contains(text(),'одерация фотографий')]/../../div[2]/button",
     "LABEL"                   : r"//div[@class='img__container__imitation']",
     "SEND_BUTTON"             : r"//span[@class='base-action-button__text' and text() ='Отправить']/../..",
     "ANY"                     : r"//*",
@@ -24,6 +29,7 @@ ZEN_MODE_XPATHS = {
     "ANSWER"      : r"//div[@class='answer']",
     "RADIOBUTTON" : r"//span[@class='radio__i']/..",
     "NOT_RADIO_BUTTONS" : r"//div[@class='answer']/*[not(contains(@style,'color'))]",
+    "ANNOTATIONS" : r"//div[@class='field__hotkey']",
 }
 
 THIS  = "THIS"
@@ -36,7 +42,6 @@ CURRENT_ELEMENT = {
                 "INNER_HTML" : ARG0 + r".innerHTML",
                 "ANCESTOR"   : ARG0 + r".parentNode",
              }
-
-
 }
 
+FUNCTION_DICT = { }

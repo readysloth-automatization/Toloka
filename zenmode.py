@@ -3,6 +3,7 @@ import time
 
 from constants import *
 
+
 def zenify_photo_moderation(driver):
     utils.cycle_wait(driver, ZEN_MODE_XPATHS["NOT_RADIO_BUTTONS"], lambda e : len(e) > 0)
 
@@ -12,7 +13,11 @@ def zenify_photo_moderation(driver):
 
     def resize_tasks():
         for task in driver.find_elements_by_xpath(ZEN_MODE_XPATHS["ANSWER"]+'/..'):
-            driver.execute_script(CURRENT_ELEMENT[THIS][STYLE] + ".display = 'grid';", task)
+            cmd  = CURRENT_ELEMENT[THIS][STYLE] + ".display = 'grid';"
+            cmd += CURRENT_ELEMENT[THIS][STYLE] + "['align-content'] = 'space-between';"
+            cmd += CURRENT_ELEMENT[THIS][STYLE] + ".height = '95%';"
+            driver.execute_script(cmd, task)
+
         for element in task.find_elements_by_xpath("//div[@class='block'] | //div[@class='answer']"):
             driver.execute_script(CURRENT_ELEMENT[THIS][STYLE] + ".width = '100%';", element)
 
@@ -21,6 +26,27 @@ def zenify_photo_moderation(driver):
             utils.make_bigger_text(driver, radiobutton, 40)
             driver.execute_script(CURRENT_ELEMENT[THIS][STYLE] + "['line-height'] = '0px'", radiobutton)
 
+    def make_bigger_images():
+        for image in driver.find_elements_by_xpath(XPATH["IMAGES"]+'/div'):
+            url    = image.get_attribute('style')
+            bigger = url.replace('L','XL')
+            cmd    = CURRENT_ELEMENT[THIS][STYLE] + '=' + "'{}';".format(bigger)
+            cmd   += CURRENT_ELEMENT[THIS][STYLE] + ".height = '200%';"
+            driver.execute_script(cmd, image)
+
+    def make_annotations():
+        for left_annotation, right_annotation in utils.list_to_tuple_list(driver.find_elements_by_xpath(ZEN_MODE_XPATHS["ANNOTATIONS"])):
+            cmd  = CURRENT_ELEMENT[THIS][STYLE] + ".width  = '30px';"
+            cmd += CURRENT_ELEMENT[THIS][STYLE] + ".height = '30px';"
+            cmd += CURRENT_ELEMENT[THIS][STYLE] + "['font-size'] = '25px';"
+            cmd += CURRENT_ELEMENT[THIS][STYLE] + "['line-height'] = 1;"
+            cmd += CURRENT_ELEMENT[THIS][STYLE] + "['background-color'] = '#E405FF';"
+            annotation_text = ARG0 + '.innerText = {}'
+            driver.execute_script(cmd + annotation_text.format('"j"'), left_annotation)
+            driver.execute_script(cmd + annotation_text.format('"k"'), right_annotation)
+
     remove_trash()
     resize_tasks()
     make_bigger_radio_buttons()
+    make_bigger_images()
+    make_annotations()
