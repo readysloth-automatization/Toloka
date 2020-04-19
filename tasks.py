@@ -1,15 +1,13 @@
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by   import By
 
-import time
-
 import utils
 import input
 import zenmode
-import constants as CONST
+from constants import *
 
 #def photo_moderation_radiobuttons(driver):
-#    radiobuttons_iterator = driver.find_elements_by_xpath(CONST.ZEN_MODE_XPATHS["RADIOBUTTON"])
+#    radiobuttons_iterator = driver.find_elements_by_xpath(ZEN_MODE_XPATHS["RADIOBUTTON"])
 #    for suitable, not_suitable in zip(*[iter(radiobuttons_iterator)]*2):
 #        yield (suitable, not_suitable)
 #
@@ -24,13 +22,12 @@ import constants as CONST
 
 
 def go_to_photo_moderation(driver):
-    wait_and_click_on_xpath = utils.create_waiter(driver, By.XPATH, lambda element: element.click())
-    wait_and_click_on_xpath(CONST.XPATH["SIMPLE_PHOTO_MODERATION"])
-    time.sleep(5)
+    wait_and_click_on_xpath = utils.create_waiter(driver, lambda element: element.click())
+    wait_and_click_on_xpath(XPATH["SIMPLE_PHOTO_MODERATION"])
     utils.iframe_wait(driver)
-    if CONST.ZEN_MODE:
+    if ZEN_MODE:
         zenmode.zenify_photo_moderation(driver)
+        input.start_listening(input.conditional_press(another = lambda : zenmode.zenify_photo_moderation(driver)))
+    else:
+        input.start_listening(input.conditional_press())
 
-    #if_true, if_false = create_if_functions(driver, photo_moderation_radiobuttons(driver))
-    #if_true, if_false
-    input.start_listening(input.conditional_press())

@@ -3,35 +3,42 @@ from selenium.webdriver.support   import wait
 from selenium.webdriver.common.by import By
 import selenium.common as selenium_common
 
-def create_waiter(driver, locator, action, timeout = 30):
+from constants import *
+
+import time
+
+def create_waiter(driver, action, timeout = 30):
     waiter = wait.WebDriverWait(driver, timeout)
     def wait_and_make_action(selector):
-        waiter.until(EC.presence_of_element_located((locator, selector)))
+        waiter.until(EC.presence_of_element_located((By.XPATH, selector)))
         if action is None:
             return
-        if locator is By.CSS_SELECTOR:
-            action(driver.find_element_by_css_selector(selector))
-        elif locator is By.XPATH:
-            action(driver.find_element_by_xpath(selector))
+        action(driver.find_element_by_xpath(selector))
     return wait_and_make_action
 
 def iframe_wait(driver, timeout = 30):
     waiter = wait.WebDriverWait(driver, timeout)
     IFRAME_XPATH = '//iframe'
-    waiter.until(EC.frame_to_be_available_and_switch_to_it(driver.find_element_by_xpath(IFRAME_XPATH)))
+    time.sleep(0.5)
+    frame = cycle_wait(driver, IFRAME_XPATH, lambda e: len(e) > 0)
+    driver.switch_to.default_content()
+    driver.switch_to.frame(driver.find_element_by_xpath(IFRAME_XPATH))
 
 
 def make_bigger_text(driver, element, fontsize = 16):
-    bigger_font = """<font size = "{fs}"> ## </font>""".format(fs=fontsize)
-    text        = element.text
-    bigger_text = bigger_font.replace('##', text)
-    driver.execute_script("arguments[0].innerHTML = arguments[0].innerHTML.replace('{e_text}','{e_bigger_text}')".format(e_text=text, e_bigger_text=bigger_text), element)
-
+    driver.execute_script(CURRENT_ELEMENT[THIS][STYLE] + "['font-size'] = {fs}".format(fs=fontsize), element)
 
 def add_br(driver, element, count = 1):
     line_break = """<br style="line-height:{cn};">""".format(cn=count)
-    driver.execute_script("arguments[0].innerHTML = '{br}' + arguments[0].innerHTML".format(br=line_break), element)
+    driver.execute_script(CURRENT_ELEMENT[THIS]["INNER_HTML"] + " = '{br}'".format(br=line_break) + CURRENT_ELEMENT[THIS]["INNER_HTML"], element)
 
 def get_parent(driver, element, ancestor = 1):
-    return driver.execute_script("return arguments[0]" + ".parentNode"*ancestor + ";", element)
+    return driver.execute_script("return" + CURRENT_ELEMENT[THIS] + ".parentNode"*ancestor + ";", element)
 
+def cycle_wait(driver, locator, predicate):
+    elements = None
+    while True:
+        elements = driver.find_elements_by_xpath(locator)
+        if predicate(elements):
+            break
+    return elements

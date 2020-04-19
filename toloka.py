@@ -2,22 +2,26 @@ from selenium                       import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by   import By
 
+from getpass import getpass
+from constants import *
+
 import utils
 import tasks
-import constants as CONST
+import time
 
 driver = webdriver.Chrome()
-driver.get(CONST.BASE_URL)
+driver.get(BASE_URL)
 
-wait_and_click_on_css = utils.create_waiter(driver, By.CSS_SELECTOR, lambda element: element.click())
+wait_and_click_on_css = utils.create_waiter(driver, lambda element: element.click())
 
-wait_and_click_on_css(CONST.CSS_SELECTORS["LOGIN_BUTTON"])
+wait_and_click_on_css(LOGIN["LOGIN_BUTTON"])
 
 username = input("Введите логин : ")
-password = input("Введите пароль: ")
+password = getpass("Введите пароль: ")
 
-utils.create_waiter(driver, By.CSS_SELECTOR, lambda element: element.send_keys(username + "\n"))(CONST.CSS_SELECTORS["LOGIN_FIELD"])
-utils.create_waiter(driver, By.CSS_SELECTOR, lambda element: element.send_keys(password + "\n"))(CONST.CSS_SELECTORS["PASSWORD_FIELD"])
+utils.create_waiter(driver, lambda element: element.send_keys(username + "\n"))(LOGIN["INPUT_FIELD"])
+time.sleep(0.1)
+utils.create_waiter(driver, lambda element: element.send_keys(password + "\n"))(LOGIN["INPUT_FIELD"])
 
 tasks.go_to_photo_moderation(driver)
 
