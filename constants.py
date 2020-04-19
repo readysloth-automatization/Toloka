@@ -4,6 +4,11 @@ ZEN_MODE = True
 CORE_COUNT = multiprocessing.cpu_count()
 BASE_URL = "https://toloka.yandex.ru/"
 
+GUI_CHOICES = {
+    'Простая модерация фотографий'     : "SIMPLE_PHOTO_MODERATION",
+    'Модерация фотографий организаций' : "ORGANIZATION_PHOTO_MODERATION",
+
+}
 
 LOGIN = {
     "LOGIN_BUTTON" : r"//span[text()='Войти']",

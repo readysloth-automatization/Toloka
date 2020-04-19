@@ -8,20 +8,38 @@ from constants import *
 import utils
 import tasks
 import time
+from argparse import ArgumentParser
 
-driver = webdriver.Chrome()
-driver.get(BASE_URL)
+from gooey import Gooey, GooeyParser
 
-wait_and_click_on_css = utils.create_waiter(driver, lambda element: element.click())
+@Gooey(program_name='AUToloka',
+       language='russian',
+       image_dir='.')
+def parse_arguments():
+    parser = GooeyParser(description="Программа для быстрой и приятной работы с Яндекс.Толокой")
+    parser.add_argument("Логин"   ,  help="Логин пользователя")
+    parser.add_argument("Пароль"  ,  help="Пароль пользователя"             , widget='PasswordField')
+    parser.add_argument("Задание" ,  help="Выберите задание из списка ниже" , choices=GUI_CHOICES.keys())
+    parser.add_argument("--ZEN"   , required=False , help="Режим, в котором приятно работать" , action='store_true')
 
-wait_and_click_on_css(LOGIN["LOGIN_BUTTON"])
+    return parser.parse_args()
 
-username = input("Введите логин : ")
-password = getpass("Введите пароль: ")
+def main():
+    arguments = parse_arguments()
+    startup(arguments)
 
-utils.create_waiter(driver, lambda element: element.send_keys(username + "\n"))(LOGIN["INPUT_FIELD"])
-time.sleep(1)
-utils.create_waiter(driver, lambda element: element.send_keys(password + "\n"))(LOGIN["INPUT_FIELD"])
+def startup(arguments):
+    driver = webdriver.Chrome()
+    driver.get(BASE_URL)
 
-tasks.go_to_organization_photo_moderation(driver)
+    wait_and_click_on_css = utils.create_waiter(driver, lambda element: element.click())
 
+    wait_and_click_on_css(LOGIN["LOGIN_BUTTON"])
+
+    utils.create_waiter(driver, lambda element: element.send_keys(arguments.Логин + "\n"))(LOGIN["INPUT_FIELD"])
+    time.sleep(1)
+    utils.create_waiter(driver, lambda element: element.send_keys(arguments.Пароль + "\n"))(LOGIN["INPUT_FIELD"])
+
+    tasks.go_to_organization_photo_moderation(driver)
+
+main()
