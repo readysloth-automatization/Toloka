@@ -4,8 +4,6 @@ ZEN_MODE = False
 CORE_COUNT = multiprocessing.cpu_count()
 BASE_URL = "https://toloka.yandex.ru/"
 
-CACHE_FILE = ".cache.json"
-
 GUI_CHOICES = {
     'Простая модерация фотографий': "SIMPLE_PHOTO_MODERATION",
     'Модерация фотографий организаций': "ORGANIZATION_PHOTO_MODERATION",

@@ -17,7 +17,7 @@ def press_once(key):
     keyboard_controller.release(key)
 
 
-def conditional_press(function_dict, preprocess=lambda: None):
+def conditional_press(function_dict):
     def on_keypress(key):
         switch = {
             keyboard.Key.esc: lambda: raiser(keyboard.Listener.StopException),
@@ -33,7 +33,6 @@ def conditional_press(function_dict, preprocess=lambda: None):
         if key in switch:
             switch[key]()
         if hasattr(key, 'char') and key.char in switch['char']:
-            preprocess(key)
             switch['char'][key.char]()
     return on_keypress
 

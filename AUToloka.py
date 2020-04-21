@@ -13,7 +13,6 @@ import utils
 import tasks
 import time
 import json
-import answer_cache
 
 from gooey import Gooey, GooeyParser
 
@@ -61,31 +60,18 @@ def parse_arguments():
         "Задание",
         help="Выберите задание из списка ниже",
         choices=CONST.GUI_CHOICES.keys())
-    parser.add_argument(
-        "--ZEN",
-        required=False,
-        help="Режим, в котором приятно работать",
-        action='store_true')
 
     return parser.parse_args()
 
 
 def main():
     arguments = parse_arguments()
-    if os.path.exists(CONST.CACHE_FILE):
-        with open(CONST.CACHE_FILE, "r") as cache_json:
-            loaded_dict = json.loads(cache_json.read())
-            answer_cache.COMPLETED_TASKS.update(loaded_dict)
     try:
         startup(arguments).quit()
     except selenium_exceptions.WebDriverException:
         pass
-    with open(CONST.CACHE_FILE, "w") as cache_json:
-        cache_json.write(json.dumps(dict(answer_cache.COMPLETED_TASKS)))
-
 
 def startup(arguments):
-    constants.ZEN_MODE = arguments.ZEN
 
     driver = webdriver.Chrome()
     driver.get(CONST.BASE_URL)
