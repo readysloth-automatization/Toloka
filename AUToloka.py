@@ -85,7 +85,7 @@ def main():
 
 
 def startup(arguments):
-    constants.ZEN_MODE = arguments.ZEN
+    CONST.ZEN_MODE = arguments.ZEN
 
     driver = webdriver.Chrome()
     driver.get(CONST.BASE_URL)
@@ -108,7 +108,7 @@ def startup(arguments):
             "\n"))(
         CONST.LOGIN["INPUT_FIELD"])
 
-    tasks.go_to_photo_moderation(driver, CONST.GUI_CHOICES[arguments.Задание])
+    tasks.choose_task(driver, CONST.GUI_CHOICES[arguments.Задание])
     return driver
 
 

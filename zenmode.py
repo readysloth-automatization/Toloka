@@ -6,7 +6,6 @@ import answer_cache
 import re
 
 
-
 def zenify_photo_moderation(driver):
     utils.cycle_wait(driver, ZEN_MODE_XPATHS["NOT_RADIO_BUTTONS"], lambda e : len(e) > 0)
 

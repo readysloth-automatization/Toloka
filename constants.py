@@ -9,6 +9,8 @@ CACHE_FILE = ".cache.json"
 GUI_CHOICES = {
     'Простая модерация фотографий': "SIMPLE_PHOTO_MODERATION",
     'Модерация фотографий организаций': "ORGANIZATION_PHOTO_MODERATION",
+    #'Оценка правильности выделения объектов в тайтлах фильмовых/сериальных документов': "TITLE_RATING",
+    #'Оцени карточку!': "RATE_CARD",
 }
 
 LOGIN = {
@@ -22,6 +24,10 @@ TASKS = {
     "ORGANIZATION_PHOTO_MODERATION": r"//div[contains(@class, 'snippet__title') and contains(text(),'Модерация фотографий организаций')]" +
     BEGIN_BUTTON,
     "SIMPLE_PHOTO_MODERATION": r"//div[contains(@class, 'snippet__title') and contains(text(),'Простая модерация фотографий')]" +
+    BEGIN_BUTTON,
+    "TITLE_RATING": r"//div[contains(@class, 'snippet__title') and contains(text(),'Оценка правильности выделения объектов в тайтлах фильмовых/сериальных документов')]" +
+    BEGIN_BUTTON,
+    "RATE_CARD": r"//div[contains(@class, 'snippet__title') and contains(text(),'Оцени карточку!')]" +
     BEGIN_BUTTON,
 }
 
