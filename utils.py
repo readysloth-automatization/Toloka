@@ -37,7 +37,7 @@ def add_br(driver, element, count = 1):
     driver.execute_script(CURRENT_ELEMENT[THIS]["INNER_HTML"] + " = '{br}'".format(br=line_break) + CURRENT_ELEMENT[THIS]["INNER_HTML"], element)
 
 def get_parent(driver, element, ancestor = 1):
-    return driver.execute_script("return" + CURRENT_ELEMENT[THIS] + ".parentNode"*ancestor + ";", element)
+    return driver.execute_script("return " + ARG0 + ".parentNode"*ancestor + ";", element)
 
 def cycle_wait(driver, locator, predicate):
     elements = None

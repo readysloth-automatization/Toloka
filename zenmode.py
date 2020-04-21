@@ -2,6 +2,9 @@ import utils
 import time
 
 from constants import *
+import answer_cache
+import re
+
 
 
 def zenify_photo_moderation(driver):
@@ -45,8 +48,24 @@ def zenify_photo_moderation(driver):
             driver.execute_script(cmd + annotation_text.format('"j"'), left_annotation)
             driver.execute_script(cmd + annotation_text.format('"k"'), right_annotation)
 
+    def colorize_previous_answers():
+        for image in driver.find_elements_by_xpath(XPATH["IMAGES"]+'/div'):
+            url   = image.get_attribute('style')
+            match = re.search("'(.+?)'", url)
+            cmd  = CURRENT_ELEMENT[THIS][STYLE] + ".background  = "
+            if match:
+                link = match.group(1)
+                if link in answer_cache:
+                    choice = answer_cache[link]
+                    if choice:
+                        cmd += "'palegreen';"
+                    else:
+                        cmd += "'palevioletred';"
+                    driver.execute_script(cmd, utils.get_parent(driver, image, 4))
+
     remove_trash()
     resize_tasks()
     make_bigger_radio_buttons()
     make_bigger_images()
     make_annotations()
+    colorize_previous_answers()
