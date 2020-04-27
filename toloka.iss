@@ -22,68 +22,20 @@ DefaultGroupName={#TolokaName}
 DisableProgramGroupPage=yes
 OutputBaseFilename="AUTOLOKA_setup"
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
-;PrivilegesRequired=lowest
-PrivilegesRequiredOverridesAllowed=dialog
+PrivilegesRequired=admin
+;PrivilegesRequiredOverridesAllowed=dialog
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
 
 [Languages]
-Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
-Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Files]
-Source: "C:\Users\VirtualWin\Desktop\toloka\toloka.cmd"; BeforeInstall: BeforeInstall; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\VirtualWin\Desktop\toloka\toloka.cmd"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
-Source: "C:\Users\VirtualWin\Desktop\toloka\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\VirtualWin\Desktop\toloka\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
-[Code]
-var exitCode : Integer;
-
-procedure ExitProcess(exitCode:integer);
-  external 'ExitProcess@kernel32.dll stdcall';
-
-procedure CheckExitCode(exitCode:integer);
-begin
-  if exitCode <> 0 then
-     begin
-     MsgBox('Ïðîèçîøëà îøèáêà ïðè ñêà÷èâàíèè python3.8. ' + SysErrorMessage(exitCode) + '.', mbError, mb_Ok);
-     ExitProcess(exitCode);
-  end;
-end;
-
-procedure ExecuteCommand(command:string);
-begin
-  Exec('cmd.exe', '/c " ' + command + ' "', '', SW_SHOW, ewWaitUntilTerminated, exitCode);
-  CheckExitCode(exitCode);
-end;
-
-procedure ExecuteCommandParallel(command:string);
-begin
-  Exec('cmd.exe', '/c "start ' + command + ' "', '', SW_SHOW, ewWaitUntilTerminated, exitCode);
-  CheckExitCode(exitCode);
-end;
-
-procedure DownloadFile(url:string; path:string);
-begin
-  ExecuteCommand('certutil.exe -urlcache -split -f ' + url + ' ' + path);
-  CheckExitCode(exitCode);
-end;
-procedure DownloadFileParallel(url:string; path:string);
-begin
-  ExecuteCommand('start certutil.exe -urlcache -split -f ' + url + ' ' + path);
-  CheckExitCode(exitCode);
-end;
-
-procedure BeforeInstall();
-begin
-  DownloadFile('https://www.python.org/ftp/python/3.8.2/python-3.8.2.exe', 'C:\Windows\Temp\python_installer.exe')
-  ExecuteCommand('C:\Windows\Temp\python_installer.exe');
-  ExecuteCommandParallel('py -3 -m pip install selenium Gooey pynput');
-  DownloadFileParallel('https://chromedriver.storage.googleapis.com/83.0.4103.14/chromedriver_win32.zip', 'C:\Windows\Temp\chromedriver.zip')
-  DownloadFile('https://download-chromium.appspot.com/dl/Win_x64', 'C:\Windows\Temp\chromium.exe')
-  ExecuteCommandParallel('powershell -command Expand-Archive -Force C:\Windows\Temp\chromedriver.zip ' + ExpandConstant('{autopf}')+'\{#TolokaName}')
-  ExecuteCommand('C:\Windows\Temp\chromium.exe')
-end;
+[Run]
+Filename: "{app}\post-install.exe";Description: "Óñòàíîâêà çàâèñèìîñòåé"; Flags: postinstall nowait skipifsilent runascurrentuser
