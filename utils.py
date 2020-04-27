@@ -11,7 +11,7 @@ def list_to_tuple_list(list):
     it = iter(list)
     return zip(it,it)
 
-def create_waiter(driver, action, timeout = 30):
+def create_waiter(driver, action, timeout = 10):
     waiter = wait.WebDriverWait(driver, timeout)
     def wait_and_make_action(selector):
         waiter.until(EC.presence_of_element_located((By.XPATH, selector)))
@@ -27,7 +27,6 @@ def iframe_wait(driver, timeout = 30):
     frame = cycle_wait(driver, IFRAME_XPATH, lambda e: len(e) > 0)
     driver.switch_to.default_content()
     driver.switch_to.frame(driver.find_element_by_xpath(IFRAME_XPATH))
-
 
 def make_bigger_text(driver, element, fontsize = 16):
     driver.execute_script(CURRENT_ELEMENT[THIS][STYLE] + "['font-size'] = {fs}".format(fs=fontsize), element)
@@ -46,3 +45,7 @@ def cycle_wait(driver, locator, predicate):
         if predicate(elements):
             break
     return elements
+
+def we_got_problems(driver):
+    error_text = "'<center> <h1> <br> Я не нашел такого задания :( <br> Может... зайти позже? <br> Я закроюсь через 10 секунд </h1> </center>'"
+    driver.execute_script("document.documentElement.innerHTML=" + error_text + ';')
