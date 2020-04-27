@@ -13,7 +13,8 @@ def add_to_cache(driver, key):
     Добавляет в кэш адрес новой картинки
     """
     focused_element = driver.find_element_by_xpath(CONST.XPATH["CURRENT_TASK"]+"/div/a")
-    image_link = focused_element.get_attribute("href")[:-1] + 'XXXS'
+    image_link = focused_element.get_attribute("href")
+    #image_link = image_link[:image_link.rfind('/')+1] + 'XXXS'
     if key.char in ('j', 'k'):
         value = {'j' : True, 'k': False}[key.char]
         COMPLETED_TASKS[image_link] = value #(hashlib.sha1(image).hexdigest(),value)
