@@ -81,7 +81,7 @@ def main():
     except selenium_exceptions.WebDriverException:
         pass
     with open(CONST.CACHE_FILE, "w") as cache_json:
-        cache_json.write(json.dumps(dict(answer_cache.COMPLETED_TASKS)))
+        cache_json.write(json.dumps(answer_cache.COMPLETED_TASKS))
 
 
 def startup(arguments):

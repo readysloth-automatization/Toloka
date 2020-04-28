@@ -1,12 +1,12 @@
 """
 Модуль для работы с кэшем
 """
-from multiprocessing import Process, Manager
+#from multiprocessing import Process, Manager
 
 import constants as CONST
 
 
-COMPLETED_TASKS = Manager().dict()
+COMPLETED_TASKS = {}
 
 def add_to_cache(driver, key):
     """
