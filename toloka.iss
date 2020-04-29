@@ -27,6 +27,7 @@ PrivilegesRequired=admin
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+LicenseFile="C:\Users\VirtualWin\Desktop\toloka\licence.txt"
 
 [Languages]
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
